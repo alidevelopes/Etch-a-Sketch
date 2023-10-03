@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="style.css" />
+    <script src="script.js" defer></script>
+    <title>Etch-a-Sketch</title>
+  </head>
+  <body>
+    <h1>Etch-a-Sketch</h1>
+    <div class="content-container">
+      <div class="option-container">
+        <div class="clr-text-container">
+          <div class="clr-picker-container">
+            <input class="clr-picker" type="color" name="" id="" />
+          </div>
+          <p>Pen color</p>
+        </div>
+        <div class="clr-text-container">
+          <div class="clr-picker-container clr-picker-container2">
+            <input class="clr-picker" type="color" name="" id="" />
+          </div>
+          <p>Background color</p>
+        </div>
+
+        <button class="rainbow">Rainbow</button>
+        <button class="eraser">Erase</button>
+        <button class="clear">Clear</button>
+        <div class="slide-container">
+          <input
+            class="grid-slider"
+            id="grid-slider"
+            type="range"
+            min="1"
+            max="60"
+            value="20"
+            name="grid-slider"
+          />
+        </div>
+      </div>
+      <div class="grid-container"></div>
+    </div>
+    <p class="footer">Copyright © Ali</p>
+  </body>
+</html>
