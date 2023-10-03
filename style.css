@@ -22,11 +22,11 @@ h1 {
 
 div.content-container {
   flex: 1 0 auto;
-  /* background-color: lightgreen; */
+  background-color: lightgreen;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 7em;
+  gap: 5em;
 
   padding: 0.5em 1em;
 }
@@ -36,6 +36,15 @@ div.content-container {
   width: 550px;
   height: 550px;
   flex: 0 0 550px;
+
+  /* for js */
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.grid {
+  border: 1px solid #333;
+  flex: 1 1 auto;
 }
 
 .option-container {
@@ -86,7 +95,6 @@ div.content-container {
 }
 
 .clr-picker-container2 {
-  /* background-color: grad lightcoral; */
   background-image: linear-gradient(45deg, red, yellow, green);
 }
 
