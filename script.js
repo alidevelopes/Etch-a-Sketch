@@ -8,6 +8,7 @@ let totalNumOfGrids = 1;
 let gridInputValue = 1;
 let penColor = "";
 let sheetColor = "";
+let currentNumOfGrids = 1;
 const SLIDER_DEFAULT_VALUE = 10;
 const PEN_DEFAULT_COLOR = "#000000";
 const SHEET_DEFAULT_COLOR = "#ffffff";
@@ -20,8 +21,13 @@ const slider = document.getElementById("grid-slider");
 const eraseBtn = document.querySelector(".erase");
 const clearBtn = document.querySelector(".clear");
 const resetBtn = document.querySelector(".reset");
+const span = document.querySelector("span");
 const penClrPickerContainer = document.querySelector(".clr-picker-1");
 const sheetClrPickerContainer = document.querySelector(".clr-picker-2");
+
+let mouseDown = false;
+document.body.onmousedown = () => (mouseDown = true);
+document.body.onmouseup = () => (mouseDown = false);
 
 resetBtn.addEventListener("click", () => {
   gridContainer.textContent = "";
@@ -56,8 +62,9 @@ slider.addEventListener("click", (event) => {
 clearBtn.addEventListener("click", () => {
   gridContainer.textContent = "";
   penColor = SHEET_DEFAULT_COLOR;
-  n = SLIDER_DEFAULT_VALUE;
+  n = currentNumOfGrids;
   createGrid(n);
+  penColor = PEN_DEFAULT_COLOR;
 });
 
 // create grids (squares) and add event listeners to each grid
@@ -66,6 +73,7 @@ function createGrid(n) {
   let gridWidth = 550 / n;
   let gridHeight = 550 / n;
 
+  span.textContent = `Grid: ${n} x ${n} `;
   for (let i = 1; i <= totalNumOfGrids; i++) {
     const gridDiv = document.createElement("div");
     gridDiv.classList.add(`grid`);
@@ -76,10 +84,15 @@ function createGrid(n) {
 
     // adding event listener to each grid
     const gridX = document.getElementById(`gridNum${i}`);
-    gridX.addEventListener("click", function () {
-      gridX.style.backgroundColor = `${penColor}`;
-    });
+    gridX.addEventListener("mouseover", changeColor);
+    gridX.addEventListener("mousedown", changeColor);
   }
+  currentNumOfGrids = n;
+}
+
+function changeColor(e) {
+  if (e.type === "mouseover" && !mouseDown) return;
+  e.target.style.backgroundColor = penColor;
 }
 
 createGrid(SLIDER_DEFAULT_VALUE);
