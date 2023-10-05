@@ -1,19 +1,15 @@
 //
 //
-
 const gridContainerSize = 550;
 const gridContainer = document.querySelector(".grid-container");
 
-let totalNumOfGrids = 1;
-let gridInputValue = 1;
 let penColor = "";
 let sheetColor = "";
+let totalNumOfGrids = 1;
 let currentNumOfGrids = 1;
-const SLIDER_DEFAULT_VALUE = 10;
+const SLIDER_DEFAULT_VALUE = 20;
 const PEN_DEFAULT_COLOR = "#000000";
 const SHEET_DEFAULT_COLOR = "#ffffff";
-penColor = PEN_DEFAULT_COLOR;
-sheetColor = SHEET_DEFAULT_COLOR;
 
 const penClr = document.getElementById("pen");
 const sheetClr = document.getElementById("sheet");
@@ -29,19 +25,14 @@ let mouseDown = false;
 document.body.onmousedown = () => (mouseDown = true);
 document.body.onmouseup = () => (mouseDown = false);
 
-resetBtn.addEventListener("click", () => {
-  gridContainer.textContent = "";
-  n = SLIDER_DEFAULT_VALUE;
-  penColor = PEN_DEFAULT_COLOR;
-  sheetColor = SHEET_DEFAULT_COLOR;
-  gridContainer.style.backgroundColor = SHEET_DEFAULT_COLOR;
-  penClrPickerContainer.style.backgroundColor = penColor;
-  sheetClrPickerContainer.style.backgroundColor = sheetColor;
-  createGrid(n);
-});
+let rainbowPen = false;
+const rainbowBtn = document.querySelector(".rainbow");
+rainbowBtn.addEventListener("click", () => (rainbowPen = true));
 
-eraseBtn.addEventListener("click", () => (penColor = sheetColor));
+penColor = PEN_DEFAULT_COLOR;
+sheetColor = SHEET_DEFAULT_COLOR;
 penClr.addEventListener("input", (event) => {
+  rainbowPen = false;
   penColor = event.target.value;
   penClrPickerContainer.style.backgroundColor = penColor;
 });
@@ -52,22 +43,35 @@ sheetClr.addEventListener("input", (event) => {
   sheetClrPickerContainer.style.backgroundColor = sheetColor;
 });
 
+eraseBtn.addEventListener("click", () => {
+  rainbowPen = false;
+  penColor = sheetColor;
+});
+
 slider.addEventListener("click", (event) => {
   if (gridContainer.firstChild) gridContainer.textContent = "";
-  gridInputValue = Math.floor(event.target.value);
-  n = gridInputValue;
+  n = Math.floor(event.target.value);
   createGrid(n);
 });
 
 clearBtn.addEventListener("click", () => {
   gridContainer.textContent = "";
-  penColor = SHEET_DEFAULT_COLOR;
   n = currentNumOfGrids;
   createGrid(n);
-  penColor = PEN_DEFAULT_COLOR;
 });
 
-// create grids (squares) and add event listeners to each grid
+resetBtn.addEventListener("click", () => {
+  rainbowPen = false;
+  penColor = PEN_DEFAULT_COLOR;
+  gridContainer.textContent = "";
+  sheetColor = SHEET_DEFAULT_COLOR;
+  slider.value = SLIDER_DEFAULT_VALUE;
+  gridContainer.style.backgroundColor = SHEET_DEFAULT_COLOR;
+  penClrPickerContainer.style.backgroundColor = penColor;
+  sheetClrPickerContainer.style.backgroundColor = sheetColor;
+  createGrid(SLIDER_DEFAULT_VALUE);
+});
+
 function createGrid(n) {
   totalNumOfGrids = n * n;
   let gridWidth = 550 / n;
@@ -82,7 +86,6 @@ function createGrid(n) {
     gridDiv.style.height = `${gridHeight}px`;
     gridContainer.appendChild(gridDiv);
 
-    // adding event listener to each grid
     const gridX = document.getElementById(`gridNum${i}`);
     gridX.addEventListener("mouseover", changeColor);
     gridX.addEventListener("mousedown", changeColor);
@@ -92,7 +95,28 @@ function createGrid(n) {
 
 function changeColor(e) {
   if (e.type === "mouseover" && !mouseDown) return;
+
+  if (rainbowPen) {
+    penColor = getRainbowColor();
+    e.target.style.backgroundColor = penColor;
+  }
   e.target.style.backgroundColor = penColor;
 }
 
-createGrid(SLIDER_DEFAULT_VALUE);
+function getRainbowColor() {
+  let rainbowColors = [
+    "#e81416",
+    "#ffa500",
+    "#faeb36",
+    "#79c314",
+    "#487de7",
+    "#4b369d",
+    "#70369d",
+  ];
+  let rainbowColor = "";
+  rainbowColor =
+    rainbowColors[Math.floor(Math.random() * rainbowColors.length)];
+  return rainbowColor;
+}
+
+window.onload = () => createGrid(SLIDER_DEFAULT_VALUE);
